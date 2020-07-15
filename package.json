@@ -1,0 +1,33 @@
+{
+  "name": "backlog-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && ncc build lib/main.js",
+    "format": "prettier --write **/*.ts",
+    "format-check": "prettier --check **/*.ts"
+  },
+  "repository": {
+    "type": "git"
+  },
+  "keywords": [
+    "Backlog",
+    "issue",
+    "pull request"
+  ],
+  "author": "Toshio Takiguchi",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0",
+    "@octokit/webhooks": "^7.6.5",
+    "axios": "^0.19.2"
+  },
+  "devDependencies": {
+    "@types/node": "^12.0.4",
+    "@zeit/ncc": "^0.22.3",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.6"
+  }
+}

@@ -1,0 +1,15 @@
+name: 'Backlog Sync'
+description: 'Add comment to issue when pull request'
+inputs:
+    repo-token:
+        description: 'The GITHUB_TOKEN secret'
+        required: true
+    backlog-host:
+        description: 'Host of backlog'
+        required: true
+    api-key:
+        description: 'API_KEY of backlog'
+        required: true
+runs:
+    using: 'node12'
+    main: 'dist/index.js'
