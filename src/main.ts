@@ -20,6 +20,8 @@ async function run() {
     for (const issueKey of parseIssueKey(title)) {
       const apiUrl = `https://${host}/api/v2/issues/${issueKey}/comments?apiKey=${apiKey}`;
 
+      console.log(`apiUrl: ${apiUrl}`);
+
       await axios.post(
         apiUrl,
         querystring.stringify({

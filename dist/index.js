@@ -1797,6 +1797,7 @@ function run() {
                     if (!(_i < _a.length)) return [3 /*break*/, 4];
                     issueKey = _a[_i];
                     apiUrl = "https://" + host + "/api/v2/issues/" + issueKey + "/comments?apiKey=" + apiKey;
+                    console.log("apiUrl: " + apiUrl);
                     return [4 /*yield*/, axios_1.default.post(apiUrl, querystring_1.default.stringify({
                             content: "Pull request created: [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.url + ")",
                         }), {
