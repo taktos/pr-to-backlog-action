@@ -1,9 +1,7 @@
 name: 'Backlog Pull Request'
-description: 'Add comment to issue when pull request created'
+description: 'Add comment to backlog issues when pull request opened or closed'
+author: Toshio Takiguchi
 inputs:
-    repo-token:
-        description: 'The GITHUB_TOKEN secret'
-        required: true
     backlog-host:
         description: 'Host of backlog'
         required: true

@@ -1777,12 +1777,11 @@ var axios_1 = __importDefault(__webpack_require__(53));
 var querystring_1 = __importDefault(__webpack_require__(191));
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var token, host, apiKey, pullRequestPayload, title, _i, _a, issueKey, apiUrl, error_1;
+        var host, apiKey, pullRequestPayload, title, payload, _i, _a, issueKey, apiUrl, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 5, , 6]);
-                    token = core.getInput("repo-token", { required: true });
                     host = core.getInput("backlog-host", { required: true });
                     apiKey = core.getInput("api-key", { required: true });
                     if (github.context.eventName != "pull_request") {
@@ -1791,19 +1790,38 @@ function run() {
                     pullRequestPayload = github.context
                         .payload;
                     title = pullRequestPayload.pull_request.title;
+                    payload = void 0;
+                    switch (pullRequestPayload.action) {
+                        case "opened":
+                            payload = {
+                                content: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") created by " + pullRequestPayload.sender.login + ": " + title,
+                            };
+                            break;
+                        case "closed":
+                            if (pullRequestPayload.pull_request.merged) {
+                                payload = {
+                                    statusId: 3,
+                                    content: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") merged and closed by " + pullRequestPayload.sender.login + ": " + title,
+                                };
+                            }
+                            else {
+                                payload = {
+                                    content: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") closed by " + pullRequestPayload.sender.login + ": " + title,
+                                };
+                            }
+                            break;
+                        default:
+                            console.log("Unsupported action: " + pullRequestPayload.action);
+                            return [2 /*return*/];
+                    }
                     _i = 0, _a = parseIssueKey(title);
                     _b.label = 1;
                 case 1:
                     if (!(_i < _a.length)) return [3 /*break*/, 4];
                     issueKey = _a[_i];
-                    apiUrl = "https://" + host + "/api/v2/issues/" + issueKey + "/comments?apiKey=" + apiKey;
-                    console.log("apiUrl: " + apiUrl);
-                    return [4 /*yield*/, axios_1.default.post(apiUrl, querystring_1.default.stringify({
-                            content: "Pull request created by " + pullRequestPayload.sender.login + ": [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + "): " + title,
-                        }), {
-                            headers: {
-                                "Content-Type": "application/x-www-form-urlencoded",
-                            },
+                    apiUrl = "https://" + host + "/api/v2/issues/" + issueKey + "?apiKey=" + apiKey;
+                    return [4 /*yield*/, axios_1.default.patch(apiUrl, querystring_1.default.stringify(payload), {
+                            headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         })];
                 case 2:
                     _b.sent();

@@ -1,18 +1,24 @@
-# Backlog javascript action
+# Backlog Pull Request action
 
-This action sync pull request to Backlog issues.
+This action add comment to Backlog issues when pull request opend or closed.
 
 ## Inputs
 
-### `backlog-url`
+### `backlog-host`
 
-**Required** The URL of your backlog workspace.
+**Required** The host of your backlog workspace.
 
-## Outputs
+### `api-key`
+
+**Required** The api key of your backlog account.
 
 ## Example usage
 
-uses: actions/backlog-action@v1
-with:
-  url: 'https://workspace.backlog.com'
+```
+- name: Backlog pull request
+  uses: actions/backlog-action@v0.1.0
+  with:
+    backlog-host: // workspace.backlog.com
+    api-key: ${{ secrets.BACKLOG_API_KEY }}
+```
 

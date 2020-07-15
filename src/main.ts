@@ -1,12 +1,11 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import * as Webhooks from "@octokit/webhooks";
+import Webhooks from "@octokit/webhooks";
 import axios from "axios";
 import querystring from "querystring";
 
 async function run() {
   try {
-    const token = core.getInput("repo-token", { required: true });
     const host = core.getInput("backlog-host", { required: true });
     const apiKey = core.getInput("api-key", { required: true });
 
@@ -14,25 +13,38 @@ async function run() {
       core.error("Event should be a pull_request");
     }
     const pullRequestPayload = github.context
-      .payload as Webhooks.Webhooks.WebhookPayloadPullRequest;
+      .payload as Webhooks.WebhookPayloadPullRequest;
     const title = pullRequestPayload.pull_request.title;
 
-    for (const issueKey of parseIssueKey(title)) {
-      const apiUrl = `https://${host}/api/v2/issues/${issueKey}/comments?apiKey=${apiKey}`;
-
-      console.log(`apiUrl: ${apiUrl}`);
-
-      await axios.post(
-        apiUrl,
-        querystring.stringify({
-          content: `Pull request created by ${pullRequestPayload.sender.login}: [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}): ${title}`,
-        }),
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
+    let payload;
+    switch (pullRequestPayload.action) {
+      case "opened":
+        payload = {
+          content: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) created by ${pullRequestPayload.sender.login}: ${title}`,
+        };
+        break;
+      case "closed":
+        if (pullRequestPayload.pull_request.merged) {
+          payload = {
+            statusId: 3,
+            content: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) merged and closed by ${pullRequestPayload.sender.login}: ${title}`,
+          };
+        } else {
+          payload = {
+            content: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) closed by ${pullRequestPayload.sender.login}: ${title}`,
+          };
         }
-      );
+        break;
+      default:
+        console.log(`Unsupported action: ${pullRequestPayload.action}`);
+        return;
+    }
+
+    for (const issueKey of parseIssueKey(title)) {
+      const apiUrl = `https://${host}/api/v2/issues/${issueKey}?apiKey=${apiKey}`;
+      await axios.patch(apiUrl, querystring.stringify(payload), {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      });
     }
   } catch (error) {
     core.error(error);
