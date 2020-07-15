@@ -1,5 +1,5 @@
-name: 'Backlog Sync'
-description: 'Add comment to issue when pull request'
+name: 'Backlog Pull Request'
+description: 'Add comment to issue when pull request created'
 inputs:
     repo-token:
         description: 'The GITHUB_TOKEN secret'
