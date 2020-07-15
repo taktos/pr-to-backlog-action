@@ -1820,6 +1820,7 @@ function run() {
                     if (!(_i < _a.length)) return [3 /*break*/, 4];
                     issueKey = _a[_i];
                     apiUrl = "https://" + host + "/api/v2/issues/" + issueKey + "?apiKey=" + apiKey;
+                    console.log(apiUrl);
                     return [4 /*yield*/, axios_1.default.patch(apiUrl, querystring_1.default.stringify(payload), {
                             headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         })];
