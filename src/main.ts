@@ -20,18 +20,18 @@ async function run() {
     switch (pullRequestPayload.action) {
       case "opened":
         payload = {
-          content: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) created by ${pullRequestPayload.sender.login}: ${title}`,
+          comment: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) created by ${pullRequestPayload.sender.login}: ${title}`,
         };
         break;
       case "closed":
         if (pullRequestPayload.pull_request.merged) {
           payload = {
             statusId: 3,
-            content: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) merged and closed by ${pullRequestPayload.sender.login}: ${title}`,
+            comment: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) merged and closed by ${pullRequestPayload.sender.login}: ${title}`,
           };
         } else {
           payload = {
-            content: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) closed by ${pullRequestPayload.sender.login}: ${title}`,
+            comment: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) closed by ${pullRequestPayload.sender.login}: ${title}`,
           };
         }
         break;
@@ -43,6 +43,7 @@ async function run() {
     for (const issueKey of parseIssueKey(title)) {
       const apiUrl = `https://${host}/api/v2/issues/${issueKey}?apiKey=${apiKey}`;
       console.log(apiUrl);
+      console.log(querystring.stringify(payload))
       await axios.patch(apiUrl, querystring.stringify(payload), {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });

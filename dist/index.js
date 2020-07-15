@@ -1794,19 +1794,19 @@ function run() {
                     switch (pullRequestPayload.action) {
                         case "opened":
                             payload = {
-                                content: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") created by " + pullRequestPayload.sender.login + ": " + title,
+                                comment: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") created by " + pullRequestPayload.sender.login + ": " + title,
                             };
                             break;
                         case "closed":
                             if (pullRequestPayload.pull_request.merged) {
                                 payload = {
                                     statusId: 3,
-                                    content: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") merged and closed by " + pullRequestPayload.sender.login + ": " + title,
+                                    comment: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") merged and closed by " + pullRequestPayload.sender.login + ": " + title,
                                 };
                             }
                             else {
                                 payload = {
-                                    content: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") closed by " + pullRequestPayload.sender.login + ": " + title,
+                                    comment: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") closed by " + pullRequestPayload.sender.login + ": " + title,
                                 };
                             }
                             break;
@@ -1821,6 +1821,7 @@ function run() {
                     issueKey = _a[_i];
                     apiUrl = "https://" + host + "/api/v2/issues/" + issueKey + "?apiKey=" + apiKey;
                     console.log(apiUrl);
+                    console.log(querystring_1.default.stringify(payload));
                     return [4 /*yield*/, axios_1.default.patch(apiUrl, querystring_1.default.stringify(payload), {
                             headers: { "Content-Type": "application/x-www-form-urlencoded" },
                         })];
