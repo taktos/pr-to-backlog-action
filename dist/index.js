@@ -1783,7 +1783,7 @@ function run() {
                 case 0:
                     _b.trys.push([0, 5, , 6]);
                     token = core.getInput("repo-token", { required: true });
-                    host = core.getInput("backlogHost", { required: true });
+                    host = core.getInput("backlog-host", { required: true });
                     apiKey = core.getInput("apk-key", { required: true });
                     if (github.context.eventName != "pull_request") {
                         core.error("Event should be a pull_request");
