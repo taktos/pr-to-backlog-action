@@ -1,6 +1,8 @@
-# Backlog Pull Request action
+# Pull request to Backlog 
 
-This action add comment to Backlog issues when pull request opend or closed.
+This action add comment to [Backlog](https://backlog.com) issues when pull request opened or closed.
+
+Pull request title should have issue key like `PROJECT-1`
 
 ## Inputs
 
@@ -15,10 +17,17 @@ This action add comment to Backlog issues when pull request opend or closed.
 ## Example usage
 
 ```
-- name: Backlog pull request
-  uses: actions/backlog-action@v0.1.0
-  with:
-    backlog-host: // workspace.backlog.com
-    api-key: ${{ secrets.BACKLOG_API_KEY }}
+on:
+  pull_request:
+    types: [opened, closed]
+jobs:
+  backlog:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Add comment to Backlog issue
+      uses: actions/pr-to-backlog-action@v1.0
+      with:
+        backlog-host: workspace.backlog.com
+        api-key: ${{ secrets.BACKLOG_API_KEY }}
 ```
 

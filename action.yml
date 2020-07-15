@@ -1,5 +1,5 @@
-name: 'Backlog Pull Request'
-description: 'Add comment to backlog issues when pull request opened or closed'
+name: 'Pull Request to Backlog'
+description: 'Add comment to Backlog issues when pull request opened or closed'
 author: Toshio Takiguchi
 inputs:
     backlog-host:

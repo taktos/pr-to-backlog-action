@@ -1777,7 +1777,7 @@ var axios_1 = __importDefault(__webpack_require__(53));
 var querystring_1 = __importDefault(__webpack_require__(191));
 function run() {
     return __awaiter(this, void 0, void 0, function () {
-        var host, apiKey, pullRequestPayload, title, payload, _i, _a, issueKey, apiUrl, error_1;
+        var host, apiKey, pr, title, payload, _i, _a, issueKey, apiUrl, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
@@ -1787,31 +1787,30 @@ function run() {
                     if (github.context.eventName != "pull_request") {
                         core.error("Event should be a pull_request");
                     }
-                    pullRequestPayload = github.context
-                        .payload;
-                    title = pullRequestPayload.pull_request.title;
+                    pr = github.context.payload;
+                    title = pr.pull_request.title;
                     payload = void 0;
-                    switch (pullRequestPayload.action) {
+                    switch (pr.action) {
                         case "opened":
                             payload = {
-                                comment: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") created by " + pullRequestPayload.sender.login + ": " + title,
+                                comment: "Pull request [#" + pr.number + "](" + pr.pull_request.html_url + ") created by " + pr.sender.login + ": " + title,
                             };
                             break;
                         case "closed":
-                            if (pullRequestPayload.pull_request.merged) {
+                            if (pr.pull_request.merged) {
                                 payload = {
                                     statusId: 3,
-                                    comment: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") merged and closed by " + pullRequestPayload.sender.login + ": " + title,
+                                    comment: "Pull request [#" + pr.number + "](" + pr.pull_request.html_url + ") merged and closed by " + pr.sender.login + ": " + title,
                                 };
                             }
                             else {
                                 payload = {
-                                    comment: "Pull request [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") closed by " + pullRequestPayload.sender.login + ": " + title,
+                                    comment: "Pull request [#" + pr.number + "](" + pr.pull_request.html_url + ") closed by " + pr.sender.login + ": " + title,
                                 };
                             }
                             break;
                         default:
-                            console.log("Unsupported action: " + pullRequestPayload.action);
+                            console.log("Unsupported action: " + pr.action);
                             return [2 /*return*/];
                     }
                     _i = 0, _a = parseIssueKey(title);

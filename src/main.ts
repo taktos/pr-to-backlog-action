@@ -12,31 +12,30 @@ async function run() {
     if (github.context.eventName != "pull_request") {
       core.error("Event should be a pull_request");
     }
-    const pullRequestPayload = github.context
-      .payload as Webhooks.WebhookPayloadPullRequest;
-    const title = pullRequestPayload.pull_request.title;
+    const pr = github.context.payload as Webhooks.WebhookPayloadPullRequest;
+    const title = pr.pull_request.title;
 
     let payload;
-    switch (pullRequestPayload.action) {
+    switch (pr.action) {
       case "opened":
         payload = {
-          comment: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) created by ${pullRequestPayload.sender.login}: ${title}`,
+          comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) created by ${pr.sender.login}: ${title}`,
         };
         break;
       case "closed":
-        if (pullRequestPayload.pull_request.merged) {
+        if (pr.pull_request.merged) {
           payload = {
             statusId: 3,
-            comment: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) merged and closed by ${pullRequestPayload.sender.login}: ${title}`,
+            comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) merged and closed by ${pr.sender.login}: ${title}`,
           };
         } else {
           payload = {
-            comment: `Pull request [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) closed by ${pullRequestPayload.sender.login}: ${title}`,
+            comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) closed by ${pr.sender.login}: ${title}`,
           };
         }
         break;
       default:
-        console.log(`Unsupported action: ${pullRequestPayload.action}`);
+        console.log(`Unsupported action: ${pr.action}`);
         return;
     }
 
@@ -52,7 +51,7 @@ async function run() {
   }
 }
 
-function parseIssueKey(title: string): RegExpMatchArray {
+function parseIssueKey(title: string): Array<string> {
   let re = /([A-Z][A-Z0-9_]+-\d+)/g;
   return title.match(re) || [];
 }

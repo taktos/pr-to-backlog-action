@@ -1,7 +1,7 @@
 {
-  "name": "backlog-action",
-  "version": "0.1.0",
-  "description": "",
+  "name": "pr-to-backlog-action",
+  "version": "1.0.0",
+  "description": "Add comment to Backlog issues when PR opened or closed",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc && ncc build lib/main.js",
