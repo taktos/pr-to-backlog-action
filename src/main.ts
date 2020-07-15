@@ -41,7 +41,7 @@ async function run() {
 }
 
 function parseIssueKey(title: string): RegExpMatchArray {
-  let re = /([A-Z][A-Z0-9]+-\d+)/g;
+  let re = /([A-Z][A-Z0-9_]+-\d+)/g;
   return title.match(re) || [];
 }
 

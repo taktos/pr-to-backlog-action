@@ -1823,7 +1823,7 @@ function run() {
     });
 }
 function parseIssueKey(title) {
-    var re = /([A-Z][A-Z0-9]+-\d+)/g;
+    var re = /([A-Z][A-Z0-9_]+-\d+)/g;
     return title.match(re) || [];
 }
 run();
