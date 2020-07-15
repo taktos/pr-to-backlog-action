@@ -25,7 +25,7 @@ async function run() {
       await axios.post(
         apiUrl,
         querystring.stringify({
-          content: `Pull request created: [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.url})`,
+          content: `Pull request created: [#${pullRequestPayload.number}](${pullRequestPayload.pull_request.html_url}) by ${pullRequestPayload.sender.login}`,
         }),
         {
           headers: {

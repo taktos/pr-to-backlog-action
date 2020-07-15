@@ -1799,7 +1799,7 @@ function run() {
                     apiUrl = "https://" + host + "/api/v2/issues/" + issueKey + "/comments?apiKey=" + apiKey;
                     console.log("apiUrl: " + apiUrl);
                     return [4 /*yield*/, axios_1.default.post(apiUrl, querystring_1.default.stringify({
-                            content: "Pull request created: [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.url + ")",
+                            content: "Pull request created: [#" + pullRequestPayload.number + "](" + pullRequestPayload.pull_request.html_url + ") by " + pullRequestPayload.sender.login,
                         }), {
                             headers: {
                                 "Content-Type": "application/x-www-form-urlencoded",
