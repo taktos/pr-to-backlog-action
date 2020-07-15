@@ -42,8 +42,6 @@ async function run() {
 
     for (const issueKey of parseIssueKey(title)) {
       const apiUrl = `https://${host}/api/v2/issues/${issueKey}?apiKey=${apiKey}`;
-      console.log(apiUrl);
-      console.log(querystring.stringify(payload))
       await axios.patch(apiUrl, querystring.stringify(payload), {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
