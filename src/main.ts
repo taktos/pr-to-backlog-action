@@ -7,7 +7,7 @@ import querystring from "querystring";
 async function run() {
   try {
     const token = core.getInput("repo-token", { required: true });
-    const host = core.getInput("backlogHost", { required: true });
+    const host = core.getInput("backlog-host", { required: true });
     const apiKey = core.getInput("apk-key", { required: true });
 
     if (github.context.eventName != "pull_request") {
