@@ -14,6 +14,16 @@ Pull request title should have issue key like `PROJECT-1`
 
 **Required** The api key of your backlog account.
 
+### `change-to-processing`
+
+Optional Default value is `true`.
+When `false` is specified and Pull Request is opened, status of backlog issue is not changed to `processing`.
+
+### `change-to-processed`
+
+Optional Default value is `true`.
+When `false` is specified and Pull Request is merged, status of backlog issue is not changed to `processed`
+
 ## Example usage
 
 ```
@@ -25,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Add comment to Backlog issue
-      uses: actions/pr-to-backlog-action@v1.0
+      uses: taktos/pr-to-backlog-action@v1.0
       with:
         backlog-host: workspace.backlog.com
         api-key: ${{ secrets.BACKLOG_API_KEY }}

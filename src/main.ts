@@ -8,6 +8,10 @@ async function run() {
   try {
     const host = core.getInput("backlog-host", { required: true });
     const apiKey = core.getInput("api-key", { required: true });
+    const changeToProcessing =
+      core.getInput("change-to-processing", { required: false }) !== "false";
+    const changeToProcessed =
+      core.getInput("change-to-processed", { required: false }) !== "false";
 
     if (github.context.eventName != "pull_request") {
       core.error("Event should be a pull_request");
@@ -18,16 +22,29 @@ async function run() {
     let payload;
     switch (pr.action) {
       case "opened":
-        payload = {
-          comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) created by ${pr.sender.login}: ${title}`,
-        };
+        if (changeToProcessing) {
+          payload = {
+            statusId: 2,
+            comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) created by ${pr.sender.login}: ${title}`,
+          };
+        } else {
+          payload = {
+            comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) created by ${pr.sender.login}: ${title}`,
+          };
+        }
         break;
       case "closed":
         if (pr.pull_request.merged) {
-          payload = {
-            statusId: 3,
-            comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) merged and closed by ${pr.sender.login}: ${title}`,
-          };
+          if (changeToProcessed) {
+            payload = {
+              statusId: 3,
+              comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) merged and closed by ${pr.sender.login}: ${title}`,
+            };
+          } else {
+            payload = {
+              comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) merged and closed by ${pr.sender.login}: ${title}`,
+            };
+          }
         } else {
           payload = {
             comment: `Pull request [#${pr.number}](${pr.pull_request.html_url}) closed by ${pr.sender.login}: ${title}`,
