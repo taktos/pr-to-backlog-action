@@ -8,6 +8,12 @@ inputs:
     api-key:
         description: 'API_KEY of backlog'
         required: true
+    change-to-processing:
+        description: 'Change to processing flag'
+        required: false
+    change-to-processed:
+        description: 'Change to processed flag'
+        required: false
 runs:
     using: 'node12'
     main: 'dist/index.js'
